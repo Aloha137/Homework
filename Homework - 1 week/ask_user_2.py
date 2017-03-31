@@ -13,16 +13,15 @@ def ask_user():
     question = None
     while question != 'Хорошо':
         question = input('Как дела? ')
-        
         try:
             get_answer(question)
-            except KeyError :
+        except KeyError:
             print('Не знаю что сказать...')
-        
         if question == 'пока':
             break
-
-try:
-    ask_user()
-except KeyboardInterrupt:
-    print('\nВсего хорошего!')
+if __name__ == "__main__":
+    try:
+        ask_user()
+    except KeyboardInterrupt:
+        print('\nВсего хорошего!')
+    
