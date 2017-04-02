@@ -1,32 +1,34 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+# добавьте в бота комманду /planet, которая будет принимать 
+# на вход название планеты на английском. Затем при помощи 
+# условного оператора if и ephem.constellation отвечать, 
+# в каком созвездии сегодня находится планета.
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters #import modules
+import datetime
+import ephem
 
+date = datetime.datetime.now()
 
-def show_error(bot, update, error):
-    print(error)
-
-    def greet_user(bot, update):
-        print('Вызван /start')
-        print(vars(update))
-        bot.sendMessage(update.message.chat_id, text='Давай общаться!')
-
-        def talk_to_me(bot, update):
-            print(update.message.text)
-            bot.sendMessage(update.message.chat_id, update.message.text)
-
-            def main():
-                updater = Updater('346621438:AAGJqm_SpuDvYtnpQj-PGF8lTbThTRRO3uo') #create an object of class
-                dp = updater.dispatcher
-                dp.add_handler(CommandHandler('start', greet_user))
-                dp.add_handler(MessageHandler([Filters.text], talk_to_me))
+raw_planets_list = ephem._libastro.builtin_planets()
+planets_list = {}
 
 
-                dp.add_error_handler(show_error)
 
-                updater.start_polling()
-                updater.idle()
+for _, type_, planet_name in raw_planets_list:
+    if type_ != 'Planet':
+        continue
 
+    # let's create an object for all planets by their names from list
+    a = getattr(ephem, planet_name)(date.strftime('%Y/%m/%d'))
+    planets_list[planet_name.lower()] = ephem.constellation(a)[1]
+        
 
-                main()
+def get_sign_by_planet(planet):
+    try:
+        sign = planets_list[planet.lower()]
+    except KeyError:
+        sign = 'В нашем списке нет такой планеты'
+    return sign
+
+if __name__ == '__main__':
+    print(get_sign_by_planet(input('Введите планету на латинице: ')))
+    
