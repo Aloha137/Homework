@@ -27,7 +27,7 @@ def get_sign_by_planet(planet):
         sign = planets_list[planet.lower()]
     except KeyError:
         sign = 'В нашем списке нет такой планеты'
-    return sign
+    return "Сегодня планета находится в созвездии " + str(sign)
 
 if __name__ == '__main__':
     print(get_sign_by_planet(input('Введите планету на латинице: ')))

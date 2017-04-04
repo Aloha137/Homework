@@ -3,10 +3,11 @@
 # количество слов в кавычках и ответить: 3 слова 
 
 
-def wordcount(phrase):
-    if phrase:
-        list_words = [word for word in phrase.split(' ') if word]
-        return len(list_words)
+def wordcount(args):
+    if args:
+#        args = [word for word in args.split(' ') if word]
+        print(args)
+        return "Фраза состоит из " + str(len(args)) + " слов/а"
     else:
         return "Введи что-нибудь по-братски,а ?!"
     
